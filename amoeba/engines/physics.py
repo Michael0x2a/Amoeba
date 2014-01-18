@@ -1,4 +1,6 @@
 import math
+import events
+import consts
 
 class PhysicsEngine(object):
 	'''PhysicsEngine is constructed with a list of entities and a time duration
@@ -11,8 +13,6 @@ class PhysicsEngine(object):
 		PhysicsEngine.process() does these in order:
 			- updates the position of entities with velocity and acceleration
 			- processes collisions of entities with radius
-			- processes entities that have collided
-
 	'''
 	def __init__(self, entities, time):
 		self.entities = entities
@@ -35,13 +35,7 @@ class PhysicsEngine(object):
 				entity2 = entities[k]
 				if k != i:
 					if _is_collided(entity1, entity2):
-						entity1.set_attribute('Dead')
-						entity2.set_attribute('Dead')
-
-	def process_deaths(self):
-		for entity in entities:
-			if entity.has_attribute('Dead')
-				print 'enemy %s has died!' % entity
+						events.post(consts.COLLIDE_EVENT, entity1=entity1, entity1=entity2)
 
 	def _is_collided(entity1, entity2):
 		return entity1.Radius + entity2.Radius > _calculate_distance(entity1.pos, entity2.pos)
