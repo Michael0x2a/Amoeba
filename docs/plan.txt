@@ -1,0 +1,105 @@
+MODULE: attributes
+    ALL ATTRIBUTES MUST:
+        have a 'name' attribute
+        implement a 'save' method which returns a dict
+        implement a 'load' method which accepts a dict
+        
+    QUESTIONS:
+        Subclass, or use modules?
+
+    CLASSES:
+        Position
+        Velocity
+        Acceleration
+        BoundingBox
+            width, height 
+            Pygame rect
+    
+        Collision
+            SUBCLASSES:
+                CircleCollision
+                AmoebaCollsion
+    
+        Drawable
+        Animation
+            SUBCLASSES:
+                CircleAnimation
+                AmoebaAnimation
+        IsDirty
+    
+        Health
+        MovementLoss
+    
+Entity
+    MUST:
+        implement 'save' and 'load'
+        implement easy ways to access and iterate through attributes
+    
+
+EntityManager
+    MUST:
+        implement 'save' and 'load'
+        contain a list of entity
+        implement caching
+        implement a way to query for entities with multiple attributes
+        
+    
+    
+MODULE: engines        
+    PhysicsEngine:
+        MUST:
+            Coordinates collision (collision logic inside collision detection attributes)
+            Must special-case boundary detection
+            Check entity collision
+            
+            Maintains "quadtree" (optional)
+        
+    
+    DisplayEngine:
+        MUST:
+            Draw things (based on animation attributes)
+            Draw other special effects
+            Draw only dirty items (optional)
+    
+
+
+Vector
+    Easily swap between cartesian and polar
+
+Level
+    CONTAIN:
+        artwork
+        [entity]
+        
+    IMPLEMENT:
+        save
+        load
+    
+Handler
+    Handles most special in-game logic
+    
+EventManager
+    MUST:
+        implement 'attach_handler'
+        implement 'process'
+        
+            
+        
+    
+FrameManager
+    Top-level object
+    manages gameloop
+    
+Frame
+    IMPLEMENTS:
+        start
+        update
+        draw
+        resume
+        end
+    
+    SUBCLASSES:
+        Menu
+        Game
+
+
