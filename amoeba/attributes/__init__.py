@@ -2,4 +2,5 @@
 
 from __future__ import division, absolute_import
 
-SCREEN_SIZE = (800, 600)
+from attributes.physics import *
+from attributes.animation import *
