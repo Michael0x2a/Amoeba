@@ -2,15 +2,15 @@
 
 from __future__ import division, absolute_import
 
-import vector
+from utils.vector import *
 
-class Position(vector.Vector):
+class Position(Vector):
     name = 'position'
     
-class Velocity(vector.Vector):
+class Velocity(Vector):
     name = 'velocity'
     
-class Acceleration(vector.Vector):
+class Acceleration(Vector):
     name = 'acceleration'
     
 class Radius(int):

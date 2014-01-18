@@ -2,7 +2,7 @@
 
 from __future__ import division, absolute_import
 
-class Color(object):
+class RGB(object):
     def __init__(self, r, g, b):
         self.r = r
         self.g = g

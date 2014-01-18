@@ -4,7 +4,7 @@ from __future__ import division, absolute_import
 
 import pygame
 
-import utils.color
+from utils.palette import *
 
 class Drawable(object):
     name = 'drawable'
@@ -12,11 +12,11 @@ class Drawable(object):
 class Size(float):
     name = 'size'
     
-class Color(utils.color.Color):
+class Color(RGB):
     name = 'color'
     
 class CircleAnimation(object):
     name = 'animation'
     
     def draw(self, entity, surface):
-        pygame.circle(surface, entity.color, entity.position.pos, int(entity.size))
+        pygame.draw.circle(surface, entity.color.rgb, entity.position.pos, int(entity.radius))

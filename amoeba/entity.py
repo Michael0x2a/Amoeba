@@ -13,7 +13,7 @@ def Player(position, velocity):
         attributes.Acceleration(velocity.magnitude, velocity.angle),
         attributes.Drawable(),
         attributes.Radius(20),
-        attributes.Color(255, 255, 255)
+        attributes.Color(255, 255, 255),
         attributes.CircleAnimation(),
         attributes.Affiliation('player1'))
 
@@ -23,9 +23,9 @@ class Entity(object):
         
     def __contains__(self, other):
         if isinstance(other, (tuple, list)):
-            return all(o.name in self.attributes for o in other)
+            return all(attr in self.attributes for attr in other)
         else:
-            return other.name in self.attributes
+            return other in self.attributes
             
     def add_attributes(self, *attributes):
         for attribute in attributes:
