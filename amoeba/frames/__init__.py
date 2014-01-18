@@ -2,6 +2,8 @@
 
 from __future__ import division
 
+import sys
+
 import pygame
 pygame.init()
 

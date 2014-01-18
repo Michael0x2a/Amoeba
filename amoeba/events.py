@@ -4,8 +4,11 @@ from __future__ import division
 
 import pygame
 
-
 Event = pygame.event.Event
+
+def post(event_id, **attributes):
+    e = Event(event_id, **attributes)
+    pygame.event.post(e)
 
 class EventsManager(object):
     def __init__(self):
