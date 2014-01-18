@@ -61,7 +61,7 @@ class Vector(object):
         return (self - other).magnitude
         
     def normalize(self, value=1):
-        return Vector(value, self.angle, 'polar')
+        return Polar(value, self.angle)
         
     def __add__(self, other):
         return Vector(self.x + other.x, self.y + other.y)
@@ -82,7 +82,7 @@ class Vector(object):
         return self.__mul__(num)
         
     def __neg__(self):
-        return Vector(-self.magnitude, self.angle, 'polar')
+        return Polar(-self.magnitude, self.angle)
         
     def __repr__(self):
         return 'Vector({0}, {1})'.format(self.x, self.y)

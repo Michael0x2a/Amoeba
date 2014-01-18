@@ -20,8 +20,11 @@ class GameFrame(object):
         self.events_manager.attach(self.name, pygame.KEYDOWN, handlers.test)
         
         # TODO: Make a level loading thing
-        self.entities = entity.EntityManager(
-            entity.Player(Circle(Cartesian(50, 50), Cartesian(0, 0), 20)))
+        player = entity.Player(Circle(Cartesian(50, 50), Cartesian(0, 0), 20))
+        self.entities = entity.EntityManager(player)
+        fling = handlers.Fling(player)
+        self.events_manager.attach(self.name, pygame.MOUSEBUTTONDOWN, fling)
+        self.events_manager.attach(self.name, pygame.MOUSEBUTTONUP, fling)
             
         self.physics_engine = engines.physics.PhysicsEngine(self.entities, 1)
         self.rendering_engine = engines.renderer.Renderer(self.entities)

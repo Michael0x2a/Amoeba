@@ -17,10 +17,10 @@ class Circle(object):
         return actual_distance <= min_distance
         
     def contains_point(self, point):
-        if not isinstance(Vector, point):
+        if not isinstance(point, Vector):
             point = Vector(*point)
         min_distance = self.radius
-        actual_distance = (self.position - point.position).magnitude
+        actual_distance = (self.position - point).magnitude
         return actual_distance <= min_distance
         
         

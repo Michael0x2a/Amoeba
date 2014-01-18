@@ -24,10 +24,20 @@ class PhysicsEngine(object):
         self.process_collisions(entities)
 
     def update_position(self, entities):
+        width, height = consts.SCREEN_SIZE
+        
         for entity in entities:
             for circle in entity.circles:
                 circle.velocity += circle.acceleration * self.time
                 circle.position += circle.velocity * self.time
+                circle.acceleration.magnitude = 0
+                
+                if not 10 < circle.position.x < width - 10:
+                    circle.velocity.x *= -1
+                if not 10 < circle.position.y < height - 10:
+                    circle.velocity.y *= -1
+                    
+                circle.velocity.magnitude *= 0.995
 
     def process_collisions(self, entities):
         for entity1 in entities:
