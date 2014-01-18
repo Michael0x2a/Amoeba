@@ -6,8 +6,4 @@ import pygame
 
 import events
 
-from handlers.game import *
 
-def test(event):
-    if event.key == pygame.K_DOWN:
-        print 'Test!'

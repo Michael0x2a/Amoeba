@@ -6,13 +6,10 @@ import collections
 
 import attributes
 
-def Player(position, velocity):
+def Player(*circles):
     return Entity(
-        attributes.Position(position.x, position.y),
-        attributes.Velocity(velocity.magnitude, velocity.angle),
-        attributes.Acceleration(velocity.magnitude, velocity.angle),
+        attributes.Circles(circles),
         attributes.Drawable(),
-        attributes.Radius(20),
         attributes.Color(255, 255, 255),
         attributes.CircleAnimation(),
         attributes.Affiliation('player1'))

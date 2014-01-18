@@ -19,4 +19,5 @@ class CircleAnimation(object):
     name = 'animation'
     
     def draw(self, entity, surface):
-        pygame.draw.circle(surface, entity.color.rgb, entity.position.pos, int(entity.radius))
+        for circle in entity.circles:
+            pygame.draw.circle(surface, entity.color.rgb, circle.position.pos, int(circle.radius))

@@ -19,22 +19,25 @@ class PhysicsEngine(object):
         self.time = time
 
     def process(self):
-        entities = self.entities.get('acceleration', 'velocity', 'position')
+        entities = self.entities.get('circles')
         self.update_position(entities)
         self.process_collisions(entities)
 
     def update_position(self, entities):
         for entity in entities:
-            entity.velocity += entity.acceleration * self.time
-            entity.position += entity.velocity * self.time
+            for circle in entity.circles:
+                circle.velocity += circle.acceleration * self.time
+                circle.position += circle.velocity * self.time
 
     def process_collisions(self, entities):
         for entity1 in entities:
             for entity2 in entities:
                 if entity1 is entity2:
                     pass
-                if self._is_collided(entity1, entity2):
-                    events.post(consts.COLLIDE_EVENT, entity1=entity1, entity2=entity2)
+                for circle1 in entity1.circles:
+                    for circle2 in entity2.circles:
+                        if circle1.is_intersecting(circle2):
+                            events.post(consts.COLLIDE_EVENT, entity1=entity1, entity2=entity2)
 
     def _is_collided(self, entity1, entity2):
         min_distance = entity1.radius + entity2.radius
