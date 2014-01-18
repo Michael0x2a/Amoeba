@@ -13,4 +13,6 @@ class Velocity(vector.Vector):
 class Acceleration(vector.Vector):
     name = 'acceleration'
     
+class Radius(int):
+    name = 'radius'
     

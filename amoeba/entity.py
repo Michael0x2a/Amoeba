@@ -4,6 +4,19 @@ from __future__ import division, absolute_import
 
 import collections
 
+import attributes
+
+def Player(position, velocity):
+    return Entity(
+        attributes.Position(position.x, position.y),
+        attributes.Velocity(velocity.magnitude, velocity.angle),
+        attributes.Acceleration(velocity.magnitude, velocity.angle),
+        attributes.Drawable(),
+        attributes.Radius(20),
+        attributes.Color(255, 255, 255)
+        attributes.CircleAnimation(),
+        attributes.Affiliation('player1'))
+
 class Entity(object):
     def __init__(self, *attributes):
         self.__dict__['attributes'] = {a.name: a for a in attributes}
