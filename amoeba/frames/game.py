@@ -43,6 +43,9 @@ class GameFrame(object):
     def draw(self, screen):
         self.rendering_engine.render(screen)
         
+    def suspend(self):
+        return {}
+        
     def end():
         pass
         

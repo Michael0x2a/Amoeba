@@ -11,3 +11,6 @@ from handlers.game import *
 def test(event):
     if event.key == pygame.K_DOWN:
         print 'Test!'
+        if not hasattr(event, 'done'):
+            events.post_delayed_event(pygame.KEYDOWN, 3, key=pygame.K_DOWN, done=True)
+        

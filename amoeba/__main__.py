@@ -6,7 +6,7 @@ import frames
 
 def main():
     game = frames.GameFrame()
-    frame_manager = frames.FrameManager([game])
+    frame_manager = frames.FrameManager({'game': game}, 'game')
     frame_manager.run()
     
 if __name__ == '__main__':

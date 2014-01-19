@@ -40,7 +40,7 @@ def SizeIncreasePowerUp(*circles):
         attributes.Drawable(),
         attributes.Color(0, 255, 0),
         attributes.CircleAnimation(),
-        attributes.Affiliation('power_up')
+        attributes.Affiliation('power_up'),
         attributes.SizeIncrease())
 
 class Entity(object):
