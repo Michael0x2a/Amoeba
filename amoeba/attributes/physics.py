@@ -33,13 +33,33 @@ class AmoebaPhysics2(object):
     def construct_membrane(self, entity):
         centroid = entity.circles.centroid
         amount = 24
+        interval = 5
         for i in xrange(amount):
             extrusion = Polar(100, i * 2*math.pi/amount)
-            yield centroid + extrusion
-        
+            for i in xrange(5, 15):
+                temp = extrusion.copy()
+                temp.magnitude = i * interval
+                if self.calculate_force(entity, centroid + temp) < 3:
+                    yield centroid + temp
+                    break
+            else:
+                yield centroid + extrusion
+            #yield centroid + extrusion
+            
+    def calculate_force(self, entity, temp):
+        force = Cartesian(0, 0)
+        for circle in entity.circles:
+            vec = circle.position - temp
+            vec.magnitude = 1 / vec.magnitude**2
+            force += vec
+        vec = entity.circles.centroid - temp
+        vec.magnitude = 1 / vec.magnitude**2
+        force += vec
+        #print force.magnitude * 1000
+        return force.magnitude * 1000
+            
     def process(self, entity):
-        if self.membrane is None:
-            self.membrane = list(self.construct_membrane(entity))
+        self.membrane = list(self.construct_membrane(entity))
             
         for circle in entity.circles:
             for circle2 in entity.circles:
@@ -53,6 +73,8 @@ class AmoebaPhysics2(object):
                 repulsion.magnitude *= self.inner_repulsion / v.magnitude**2
                 circle.velocity += attraction - repulsion
         
+        
+        '''
         centroid = entity.circles.centroid
         output = []
         for i, vertex in enumerate(self.membrane):
@@ -74,7 +96,7 @@ class AmoebaPhysics2(object):
                     v2.magnitude = circle.radius - v2.magnitude
                     vertex += v2
             output.append(vertex)
-        self.membrane = output
+        self.membrane = output'''
             
     def draw(self, entity, surface):
         points = [p.pos for p in self.membrane]

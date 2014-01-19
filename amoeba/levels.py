@@ -129,7 +129,8 @@ def level_8(name, entities, events):
             SPRINGS, 
             Circle(Cartesian(100, 100), Cartesian(0, 0), 15),
             Circle(Cartesian(100, 150), Cartesian(0, 0), 15),
-            Circle(Cartesian(150, 100), Cartesian(0, 0), 15))
+            Circle(Cartesian(150, 100), Cartesian(0, 0), 15),
+            Circle(Cartesian(150, 150), Cartesian(0, 0), 15))
     # Entities
     entities.add(
         player,
