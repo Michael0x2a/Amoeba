@@ -5,6 +5,9 @@ from __future__ import division, absolute_import
 import pygame
 
 from utils.vector import *
+from utils.circle import *
+import math
+import random
 
 class Position(Vector):
     name = 'position'
@@ -113,11 +116,65 @@ class AmoebaPhysics(object):
     describe a spring in the format:
         (constant, default_radius')
     '''
-    def __init__(self, nodes, springs):
-        self.nodes = nodes
+    def __init__(self, springs):
+        # springs may include all-None cols/rows for empty circles 
         self.springs = springs
 
-    def update_acceleration(self, time=00000000.1):
+    def draw(self, entity, surface):
+        for circle in entity.circles:
+            pygame.draw.circle(surface, entity.color.rgb, circle.position.pos, int(circle.radius))
+
+    def eat(self, this_entity, other_entity):
+        for i in xrange(len(other_entity.circles)):
+            self.add_random_circle(this_entity)
+
+    def remove(self, n, entity):
+        entity.circles.pop(n)
+        for i in xrange(len(self.springs[n])):
+            self.springs[i].pop(n)
+        self.springs.pop(n)
+
+    def add_random_circle(self, entity):
+        # get position from position of random circle
+        random_circle = random.choice(entity.circles)
+        position = Polar(random.randint(20, 40), random.uniform(0, 1)*math.pi) + random_circle.position
+        radius = random.randint(5, 15)
+        self.add_circle(position, radius, entity)
+
+    def add_circle(self, position, radius, entity):
+        '''
+        - establish connections to half of circles
+        '''
+        num_existing_circles = len(entity.circles)
+
+        # extend spring matrix
+        for row in self.springs:
+            row.append(None)
+        self.springs.append([None]*(num_existing_circles+1)) 
+
+        # add new circle to circles list
+        new_circle = Circle(
+            position,
+            Cartesian(0, 0),
+            radius)
+        entity.circles.append(new_circle)
+
+        connections = int(math.ceil(num_existing_circles/2.0))
+        for i in xrange(connections):
+            # pick a random existing circle
+            existing_circle_number = random.randint(0, num_existing_circles-1)
+
+            # randomize spring: constant, equilibrium length
+            # constant = random.uniform(0, 1)
+            constant = 0.001
+            equilibrium_length = random.randint(20, 40)
+
+            # add to springs
+            spring = (constant, equilibrium_length)
+            self.springs[existing_circle_number][num_existing_circles] = spring
+            self.springs[num_existing_circles][existing_circle_number] = spring
+
+    def update_acceleration(self, entity, time):
         """iterates through each edge and updates acceleration"""
         
         def _calculate_spring_acceleration(constant, equilibrium_length, length, direction):
@@ -132,18 +189,18 @@ class AmoebaPhysics(object):
             magnitude = 100 * (1.0/(distance**2))
             return Polar(magnitude, direction + math.pi)
 
-        size = len(self.nodes)
+        size = len(entity.circles)
         for i in xrange(size):
-            # get a node
-            current_node = self.nodes[i]
+            # get a circle
+            current_circle = entity.circles[i]
             for j in xrange(size):
-                # compare it to every node besides itself
+                # compare it to every circle besides itself
                 if i != j:
-                    other_node = self.nodes[j]
+                    other_circle = entity.circles[j]
 
                     # calculate distance and direction
-                    distance = current_node.position.distance(other_node.position)
-                    direction = current_node.position.direction(other_node.position)
+                    distance = current_circle.position.distance(other_circle.position)
+                    direction = current_circle.position.direction(other_circle.position)
 
                     # spring_force is zero by default
                     spring_force = Cartesian(0, 0)
@@ -157,4 +214,4 @@ class AmoebaPhysics(object):
                         spring_force = _calculate_spring_acceleration(spring[0], spring[1], distance, direction)
 
                     # add acceleration vectors to current acceleration
-                    current_node.acceleration += spring_force*time + repulsion*time
+                    current_circle.acceleration += spring_force*time + repulsion*time

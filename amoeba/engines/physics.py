@@ -27,9 +27,9 @@ class PhysicsEngine(object):
         width, height = consts.SCREEN_SIZE
         for entity in entities:
             if 'amoeba_physics' in entity:
-                entity.amoeba_physics.update_acceleration()
-            if 'amoeba_physics_2' in entity:
-                entity.amoeba_physics_2.process(entity)
+                entity.amoeba_physics.update_acceleration(entity, self.time)
+            # if 'amoeba_physics_2' in entity:
+            #     entity.amoeba_physics_2.process(entity)
 
             for circle in entity.circles:
                 circle.velocity += circle.acceleration * self.time

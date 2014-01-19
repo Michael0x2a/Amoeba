@@ -7,12 +7,12 @@ import collections
 import attributes
 
 def Player(springs, *circles):
+    circles = list(circles)
     return Entity(
         attributes.Circles(circles),
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
-        #attributes.CircleAnimation(),
-        attributes.AmoebaPhysics2(circles),
+        attributes.AmoebaPhysics(springs),
         attributes.Affiliation('player1'),
         attributes.Health(100),
         attributes.UserControllable(),
@@ -102,9 +102,10 @@ def Food(circle, health_increase):
         attributes.IncreaseHealth(),
         )
         
-def StationaryEnemy(*circles):
+def StationaryEnemy(springs, *circles):
     return Entity(
         attributes.Circles(circles),
+        attributes.AmoebaPhysics(springs),
         attributes.Drawable(),
         attributes.Color(255, 0, 0),
         attributes.CircleAnimation(),

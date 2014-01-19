@@ -40,5 +40,5 @@ class Renderer(object):
     def draw_entities(self, screen):
         for entity in self.entity_manager.get('animation','drawable'):
             entity.animation.draw(entity, screen)
-        for entity in self.entity_manager.get('amoeba_physics_2'):
-            entity.amoeba_physics_2.draw(entity, screen)
+        for entity in self.entity_manager.get('amoeba_physics'):
+            entity.amoeba_physics.draw(entity, screen)

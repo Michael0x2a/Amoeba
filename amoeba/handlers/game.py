@@ -21,6 +21,11 @@ def handle_collision(event):
         other, player = event.entity1, event.entity2
     else:
         return
+
+    # remove enemy from screen
+    if other.affiliation == 'enemy':
+        player.amoeba_physics.eat(player, other)
+        other.add_attributes(attributes.RemoveMe)
         
     if 'instakill' in other:
         _instakill(player, other)
@@ -29,7 +34,8 @@ def handle_collision(event):
     elif 'increase_health' in other:
         _increase_health(player, other)
     elif 'inflicts_damage' in other:
-        _inflicts_damage(player, other)
+        pass
+        # _inflicts_damage(player, other)
     elif 'trigger' in other:
         events.post(consts.TRIGGER, origin=other, tag=other.trigger)
         

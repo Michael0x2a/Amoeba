@@ -59,8 +59,13 @@ def sound_effect_attachments(name, events):
 
 def level_1(name, entities, events):
     player = entity.Player(
-        SPRINGS,
-        Circle(Cartesian(100, 100), Cartesian(0, 0), 25))
+        [
+            [None]
+        ],
+        Circle(Cartesian(100, 100), Cartesian(0, 0), 15))
+    for i in xrange(5):
+        player.amoeba_physics.add_random_circle(player)
+    # player.amoeba_physics.remove(3, player)
         
     entities.add(
         player,
@@ -86,13 +91,14 @@ def level_1(name, entities, events):
             Circle(Cartesian(700, 100), Cartesian(0, 0), 10),
             30),
         entity.StationaryEnemy(
-            Circle(Cartesian(700, 500), Cartesian(0, 0), 15)),
-        entity.StationaryEnemy(
-            Circle(Cartesian(400, 400), Cartesian(0, 0), 15)),
-        entity.StationaryEnemy(
-            Circle(Cartesian(400, 500), Cartesian(0, 0), 15)),
-        entity.StationaryEnemy(
-            Circle(Cartesian(250, 450), Cartesian(0, 0), 50)),
+            SPRINGS,
+            Circle(Cartesian(500, 500), Cartesian(0, 0), 15)),
+        # entity.StationaryEnemy(
+        #     Circle(Cartesian(400, 400), Cartesian(0, 0), 15)),
+        # entity.StationaryEnemy(
+        #     Circle(Cartesian(400, 500), Cartesian(0, 0), 15)),
+        # entity.StationaryEnemy(
+        #     Circle(Cartesian(250, 450), Cartesian(0, 0), 50)),
         entity.Food(
             Circle(Cartesian(400, 450), Cartesian(0, 0), 15),
             30)
