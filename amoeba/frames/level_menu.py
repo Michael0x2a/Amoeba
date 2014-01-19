@@ -21,13 +21,13 @@ class LevelSelectFrame(object):
         
         margin = consts.SCREEN_SIZE[0] - 150 * (4 + 1)
         for x in range(1, 5):
-            for y in range(1, 3):
+            for y in range(0, 2):
                 self.buttons.append(Button(
-                    (margin / 2 + 150 * x, 125 + y * 150), 
+                    (margin / 2 + 150 * x, 275 + y * 150), 
                     (100, 100),
-                    str(x * y),
+                    str(x + 4 * y),
                     'game',
-                    levels.level_map[x * y]))
+                    levels.level_map[x + 4 * y]))
             
     def start(self, events_manager):
         self.events_manager = events_manager
