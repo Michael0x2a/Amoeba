@@ -4,7 +4,7 @@ from __future__ import division, absolute_import
 
 import pygame
 
-SCREEN_SIZE = (800, 600)
+SCREEN_SIZE = (1000, 600)
 
 # EVENTS
 

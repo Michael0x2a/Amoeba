@@ -11,6 +11,7 @@ import attributes
 
 from utils.vector import *
 from utils.circle import *
+import utils.palette as palette
 
 
 SPRINGS = [
@@ -62,10 +63,8 @@ def level_1(name, entities, events):
         [
             [None]
         ],
+        2,
         Circle(Cartesian(100, 100), Cartesian(0, 0), 15))
-    for i in xrange(5):
-        player.amoeba_physics.add_random_circle(player)
-    # player.amoeba_physics.remove(3, player)
         
     entities.add(
         player,
@@ -92,16 +91,19 @@ def level_1(name, entities, events):
             30),
         entity.StationaryEnemy(
             SPRINGS,
+            3,
+            palette.PINK,
             Circle(Cartesian(500, 500), Cartesian(0, 0), 15)),
-        # entity.StationaryEnemy(
-        #     Circle(Cartesian(400, 400), Cartesian(0, 0), 15)),
-        # entity.StationaryEnemy(
-        #     Circle(Cartesian(400, 500), Cartesian(0, 0), 15)),
-        # entity.StationaryEnemy(
-        #     Circle(Cartesian(250, 450), Cartesian(0, 0), 50)),
-        entity.Food(
-            Circle(Cartesian(400, 450), Cartesian(0, 0), 15),
-            30)
+        entity.StationaryEnemy(
+            SPRINGS,
+            1,
+            palette.ORANGE,
+            Circle(Cartesian(400, 100), Cartesian(0, 0), 15)),
+        entity.StationaryEnemy(
+            SPRINGS,
+            4,
+            palette.YELLOW,
+            Circle(Cartesian(700, 300), Cartesian(0, 0), 15))
     )
     
     standard_attachments(name, events, player)
@@ -120,7 +122,47 @@ def level_1(name, entities, events):
             entities)
     )
         
-        
+def level_2(name, entities, events):
+    player = entity.Player(
+        [
+            [None]
+        ],
+        5,
+        Circle(Cartesian(150, 200), Cartesian(0, 0), 15))
+
+    entities.add(
+        player,
+        entity.Drifter(
+            [
+                [None]
+            ],
+            2,
+            palette.GREEN - (0, 150, 0),
+            Circle(Cartesian(100, 500), Cartesian(0, 0), 10)),
+        entity.Drifter(
+            [
+                [None]
+            ],
+            3,
+            palette.GREEN - (0, 75, 0),
+            Circle(Cartesian(800, 200), Cartesian(0, 0), 10)),
+        entity.Drifter(
+            [
+                [None]
+            ],
+            4,
+            palette.GREEN,
+            Circle(Cartesian(800, 500), Cartesian(0, 0), 10)),
+        entity.Hunter(
+            [
+                [None]
+            ],
+            7,
+            palette.YELLOW,
+            Circle(Cartesian(700, 500), Cartesian(0, 0), 10))
+        )
+    standard_attachments(name, events, player)
+    sound_effect_attachments(name, events)
         
 def level_8(name, entities, events):
     
@@ -158,8 +200,8 @@ def level_8(name, entities, events):
     
 
 level_map = {
-    1: level_1,
-    2: level_1,
+    1: level_2,
+    2: level_2,
     3: level_1,
     4: level_1,
     5: level_1,

@@ -8,19 +8,22 @@ import math
 
 import entity
 
-def find_closest_target(entity, entities):
-    targets = entities.get('user_controllable')
+def find_closest(entity, entities):
+    # targets = entities.get('user_controllable')
         
-    closest_distance = float('inf')
-    closest = None
+    # closest_distance = float('inf')
+    # closest = None
     
-    for target in targets:
-        distance = (target.circles.centroid - entity.circles.centroid).magnitude
-        if distance < closest_distance:
-            closest_distance = distance
-            closest = target
+    # for target in targets:
+    #     distance = (target.circles.centroid - entity.circles.centroid).magnitude
+    #     if distance < closest_distance:
+    #         closest_distance = distance
+    #         closest = target
             
-    return (closest.circles.centroid - entity.circles.centroid).angle
+    # return (closest.circles.centroid - entity.circles.centroid).angle
+    for e in entities:
+        if 'user_controllable' in e:
+            return e
 
 class DriftMovement(object):
     name = 'movement_ai'
@@ -32,8 +35,9 @@ class DriftMovement(object):
         current = time.time()
         if current - self.start > 2:
             self.start = current
+            angle = random.uniform(-math.pi/8, math.pi/8)
             for circle in entity.circles:
-                circle.velocity.angle += random.uniform(-math.pi/8, math.pi/8)
+                circle.velocity.angle += angle
                 circle.velocity.magnitude = self.speed
     
 class ChasingMovement(object):
@@ -46,7 +50,7 @@ class ChasingMovement(object):
     def process(self, entity, entities):
         current = time.time()
         if current - self.start > 2:
-            angle = find_closest(entity, entities).angle
+            angle = find_closest(entity, entities).circles[0].position.direction(entity.circles[0].position) + math.pi
             self.start = current
             for circle in entity.circles:
                 circle.velocity.angle = angle

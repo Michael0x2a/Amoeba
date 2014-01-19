@@ -104,8 +104,12 @@ class AmoebaPhysics2(object):
     def draw(self, entity, surface):
         points = [p.pos for p in self.membrane]
         pygame.draw.polygon(surface, (90,90,90), points)
-        for circle in entity.circles:
-            pygame.draw.circle(surface, (255,255,255), circle.position.pos, int(circle.radius))
+        for i in xrange(len(entity.circles)):
+            circle = entity.circles[i]
+            color = (255,255,255)
+            if i == 0:
+                color = (100, 255, 255)
+            pygame.draw.circle(surface, color, circle.position.pos, int(circle.radius))
         
 
 class AmoebaPhysics(object):
@@ -121,11 +125,22 @@ class AmoebaPhysics(object):
         self.springs = springs
 
     def draw(self, entity, surface):
-        for circle in entity.circles:
-            pygame.draw.circle(surface, entity.color.rgb, circle.position.pos, int(circle.radius))
+        for i in xrange(len(entity.circles)):
+            circle = entity.circles[i]
+            color = entity.color.rgb
+            if 'user_controllable' in entity:
+                if i == 0:
+                    color = (100, 255, 255)
+            pygame.draw.circle(surface, color, circle.position.pos, int(circle.radius))
+
+    def damage(self, damage, entity):
+        entity.circles[0].radius -= damage
+        if entity.circles[0].radius < 0:
+            self.remove(0, entity)
 
     def eat(self, this_entity, other_entity):
-        for i in xrange(len(other_entity.circles)):
+        for i in xrange(int(len(other_entity.circles)/2)):
+            print i
             self.add_random_circle(this_entity)
 
     def remove(self, n, entity):
@@ -138,7 +153,7 @@ class AmoebaPhysics(object):
         # get position from position of random circle
         random_circle = random.choice(entity.circles)
         position = Polar(random.randint(20, 40), random.uniform(0, 1)*math.pi) + random_circle.position
-        radius = random.randint(5, 15)
+        radius = random.randint(3, 15)
         self.add_circle(position, radius, entity)
 
     def add_circle(self, position, radius, entity):
@@ -159,14 +174,14 @@ class AmoebaPhysics(object):
             radius)
         entity.circles.append(new_circle)
 
-        connections = int(math.ceil(num_existing_circles/2.0))
+        connections = int(math.ceil(num_existing_circles/1.3))
         for i in xrange(connections):
             # pick a random existing circle
             existing_circle_number = random.randint(0, num_existing_circles-1)
 
             # randomize spring: constant, equilibrium length
             # constant = random.uniform(0, 1)
-            constant = 0.001
+            constant = 0.0005
             equilibrium_length = random.randint(20, 40)
 
             # add to springs

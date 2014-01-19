@@ -22,6 +22,7 @@ class Circle(object):
         min_distance = self.radius
         actual_distance = (self.position - point).magnitude
         return actual_distance <= min_distance
+
         
         
         

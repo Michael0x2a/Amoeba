@@ -6,9 +6,9 @@ import collections
 
 import attributes
 
-def Player(springs, *circles):
+def Player(springs, size, *circles):
     circles = list(circles)
-    return Entity(
+    entity = Entity(
         attributes.Circles(circles),
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
@@ -17,6 +17,9 @@ def Player(springs, *circles):
         attributes.Health(100),
         attributes.UserControllable(),
         attributes.Friction(0.995))
+    for i in xrange(size-1):
+        entity.amoeba_physics.add_random_circle(entity)
+    return entity
         
 def InstakillEnemy(*circles):
     return Entity(
@@ -28,27 +31,33 @@ def InstakillEnemy(*circles):
         attributes.InstaKill(),
         attributes.Friction(0.995))
         
-def Drifter(*circles):
-    return Entity(
+def Drifter(springs, size, color, *circles):
+    entity = Entity(
         attributes.Circles(circles),
+        attributes.AmoebaPhysics(springs),
         attributes.Drawable(),
-        attributes.Color(0, 255, 0),
+        attributes.Color(*color.rgb),
         attributes.CircleAnimation(),
         attributes.Affiliation('enemy'),
-        attributes.DriftMovement(1),
-        attributes.Friction(0.995),
-        attributes.InflictsDamage(0.1))
-        
-def Hunter(*circles):
-    return Entity(
+        attributes.DriftMovement(3),
+        attributes.Friction(0.995))
+    for i in xrange(size-1):
+        entity.amoeba_physics.add_random_circle(entity)
+    return entity
+
+def Hunter(springs, size, color, *circles):
+    entity = Entity(
         attributes.Circles(circles),
         attributes.Drawable(),
-        attributes.Color(0, 255, 0),
-        attributes.CircleAnimation(),
+        attributes.AmoebaPhysics(springs),
+        attributes.Color(*color.rgb),
         attributes.Affiliation('enemy'),
         attributes.ChasingMovement(2),
         attributes.Friction(0.995),
         attributes.InflictsDamage(0.1))
+    for i in xrange(size-1):
+        entity.amoeba_physics.add_random_circle(entity)
+    return entity
         
 def Bullet(position, velocity, affiliation):
     return Entity(
@@ -102,16 +111,19 @@ def Food(circle, health_increase):
         attributes.IncreaseHealth(),
         )
         
-def StationaryEnemy(springs, *circles):
-    return Entity(
+def StationaryEnemy(springs, size, color, *circles):
+    entity = Entity(
         attributes.Circles(circles),
         attributes.AmoebaPhysics(springs),
         attributes.Drawable(),
-        attributes.Color(255, 0, 0),
+        attributes.Color(*color.rgb),
         attributes.CircleAnimation(),
         attributes.Affiliation('enemy'),
         attributes.Friction(0.995),
         attributes.InflictsDamage(0.1))
+    for i in xrange(size-1):
+        entity.amoeba_physics.add_random_circle(entity)
+    return entity
 
 class Entity(object):
     def __init__(self, *attributes):

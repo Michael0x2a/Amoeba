@@ -24,8 +24,14 @@ def handle_collision(event):
 
     # remove enemy from screen
     if other.affiliation == 'enemy':
-        player.amoeba_physics.eat(player, other)
-        other.add_attributes(attributes.RemoveMe)
+        if len(player.circles) > len(other.circles):
+            player.amoeba_physics.eat(player, other)
+            other.add_attributes(attributes.RemoveMe)
+        else:
+            other.amoeba_physics.eat(other, player)
+            player.add_attributes(attributes.RemoveMe)
+            player.add_attributes(attributes.Dead)
+            # events.post(consts.ENTITY_DEATH, dead=player)
         
     if 'instakill' in other:
         _instakill(player, other)
@@ -68,15 +74,14 @@ def _instakill(player, other):
         player.health = 0
         
 def _increase_health(player, other):
-    events.post(
-        consts.HEALTH_CHANGED,
-        target=player,
-        previous=player.health,
-        new=player.health + other.increase_health)
-        
-    player.health += other.increase_health
+    # events.post(
+    #     consts.HEALTH_CHANGED,
+    #     target=player,
+    #     previous=player.health,
+    #     new=player.health + other.increase_health)
+    
+    player.amoeba_physics.add_random_circle(player)
     other.add_attributes(attributes.RemoveMe)
-    other.increase_health = 0
 
 def _size_increase_powerup(player, other):
     events.post_delayed_event(
@@ -141,13 +146,12 @@ class Fling(object):
             return
         if 'dead' in self.entity:
             return
-            
+
+        self.entity.amoeba_physics.damage(1, self.entity)
+
         if event.type == pygame.MOUSEBUTTONDOWN:
-            circles = self.get_clicked(event)
-            if circles is None:
-                return
             self.start = event.pos
-            self.circles = circles
+            self.circles = self.entity.circles
         if event.type == pygame.MOUSEBUTTONUP:
             if self.start is None:
                 return
