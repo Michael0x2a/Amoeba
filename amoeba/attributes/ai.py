@@ -19,4 +19,4 @@ class DriftMovement(object):
             for circle in entity.circles:
                 circle.velocity.angle += random.uniform(-math.pi/8, math.pi/8)
                 circle.velocity.magnitude = self.speed
-        
+    

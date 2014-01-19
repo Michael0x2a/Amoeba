@@ -37,7 +37,7 @@ class PhysicsEngine(object):
                 if not 10 < circle.position.y < height - 10:
                     circle.velocity.y *= -1
                     
-                circle.velocity.magnitude *= 0.995
+                circle.velocity.magnitude *= entity.friction
 
     def process_collisions(self, entities):
         for entity1 in entities:

@@ -14,7 +14,8 @@ def Player(*circles):
         attributes.CircleAnimation(),
         attributes.Affiliation('player1'),
         attributes.Health(100),
-        attributes.UserControllable())
+        attributes.UserControllable(),
+        attributes.Friction(0.995))
         
 def InstakillEnemy(*circles):
     return Entity(
@@ -23,7 +24,8 @@ def InstakillEnemy(*circles):
         attributes.Color(255, 0, 0),
         attributes.CircleAnimation(),
         attributes.Affiliation('enemy'),
-        attributes.InstaKill())
+        attributes.InstaKill(),
+        attributes.Friction(0.995))
         
 def Drifter(*circles):
     return Entity(
@@ -32,8 +34,36 @@ def Drifter(*circles):
         attributes.Color(0, 255, 0),
         attributes.CircleAnimation(),
         attributes.Affiliation('enemy'),
-        attributes.DriftMovement(1))
-
+        attributes.DriftMovement(1),
+        attributes.Friction(0.995),
+        attributes.InflictsDamage(0.1))
+        
+def Bullet(position, velocity, affiliation):
+    return Entity(
+        attributes.Circles(Circle(position, velocity, 3),
+        attributes.Drawable(),
+        attributes.Color(0, 0, 255),
+        attributes.CircleAnimation(),
+        attributes.Affiliation(affiliation),
+        attributes.Friction(1)))
+            
+def Powerup(circle, powerup):
+    return Entity(
+        attributes.Circles([circle]),
+        attributes.Drawable(),
+        attributes.Color(0, 255, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('power_up'),
+        attributes.Friction(1),
+        powerup)
+        
+def Text(position, text):
+    return Entity(
+        attributes.Position(position.x, position.y),
+        attributes.Drawable(),
+        attributes.DisplayText(text),
+        attributes.Affiliation('neutral'))
+        
 def SizeIncreasePowerUp(*circles):
     return Entity(
         attributes.Circles(circles),
@@ -41,7 +71,8 @@ def SizeIncreasePowerUp(*circles):
         attributes.Color(0, 255, 0),
         attributes.CircleAnimation(),
         attributes.Affiliation('power_up'),
-        attributes.SizeIncrease())
+        attributes.SizeIncrease(),
+        )
 
 class Entity(object):
     def __init__(self, *attributes):
@@ -55,7 +86,7 @@ class Entity(object):
             
     def add_attributes(self, *attributes):
         for attribute in attributes:
-            self.attributes[attribute] = attribute
+            self.attributes[attribute.name] = attribute
         
     def remove_attributes(self, *attributes):
         for attribute in attributes:
@@ -96,6 +127,16 @@ class EntityManager(object):
             for attributes in self.cache:
                 if attributes in entity:
                     self.cache[attributes].append(entity)
+                    
+    def prune(self):
+        output = []
+        for entity in self.entities:
+            if 'remove_me' in entity:
+                print 'gone'
+                continue
+            else:
+                output.append(entity)
+        self.entities = output
         
     def __len__(self):
         return len(self.entities)

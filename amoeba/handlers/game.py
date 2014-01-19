@@ -4,28 +4,95 @@ from __future__ import division, absolute_import
 
 import pygame
 
+import consts
 import events
+import attributes
 
 from utils.vector import *
 
 def handle_collision(event):
     player = None
-    enemy = None
-    if 'player1' in event.entity1:
-        player, enemy = event.entity1, event.entity2
-    else:
-        enemy, player = event.entity1, event.entity2
-        
-    if 'instakill' in enemy:
-        print 'instakill'
-        player.health = 0
-        if 'user_controllable' in player:
-            player.remove_attributes('user_controllable')
-
+    other = None
     
-    #if 'size_increase' in power_up:
-    #    print 'SIZE'
-    #    player.size
+    if event.entity1.affiliation == 'player1':
+        player, other = event.entity1, event.entity2
+    elif event.entity2.affiliation == 'player1':
+        other, player = event.entity1, event.entity2
+    else:
+        return
+        
+    if 'instakill' in other:
+        _instakill(player, other)
+    elif 'size_increase_powerup' in other:
+        _size_increase_powerup(player, other)
+    elif 'inflicts_damage' in other:
+        _inflicts_damage(player, other)
+        
+def _inflicts_damage(player, other):
+    if player.health <= 0:
+        player.add_attributes(attributes.Dead)
+        events.post(consts.ENTITY_DEATH, dead=player)
+    else:
+        events.post(
+            consts.HEALTH_CHANGED, 
+            target=player, 
+            previous=player.health, 
+            new=player.health - other.inflicts_damage)
+            
+        player.health -= other.inflicts_damage
+        
+def handle_health_changed(event):
+    delta = event.new - event.previous
+    diff = delta * 0.1
+    
+    for circle in event.target.circles:
+        circle.radius += diff
+        
+def _instakill(player, other):
+    if 'instakill' in other:
+        player.add_attributes(attributes.Dead)
+        events.post(consts.ENTITY_DEATH, dead=player)
+        events.post(consts.HEALTH_CHANGED, target=player, previous=player.health, new=0)
+        
+        player.health = 0
+
+def _size_increase_powerup(player, other):
+    events.post_delayed_event(
+        consts.REMOVE_POWERUP, 10, 
+        player=player, 
+        original_health=player.health,
+        increase = other.size_increase_powerup)
+    events.post(
+        consts.HEALTH_CHANGED,
+        target=player,
+        previous=player.health,
+        new=player.health + other.size_increase_powerup)
+        
+    player.health += other.size_increase_powerup
+    other.add_attributes(attributes.RemoveMe)
+    other.size_increase_powerup = 0
+    
+def handle_removed_powerups(event):
+    current_health = event.player.health
+    
+    if current_health < event.original_health:
+        return
+        
+    prev = event.player.health
+    event.player.health -= event.increase
+    if event.player.health < event.original_health:
+        event.player.health = event.original_health
+        
+    
+    events.post(
+        consts.HEALTH_CHANGED,
+        target=event.player,
+        previous=prev,
+        new=event.player.health)
+        
+    print 'done', event.player.health
+    
+    
     
 class Fling(object):
     def __init__(self, entity):
@@ -35,6 +102,8 @@ class Fling(object):
         
     def __call__(self, event):
         if 'user_controllable' not in self.entity:
+            return
+        if 'dead' in self.entity:
             return
             
         if event.type == pygame.MOUSEBUTTONDOWN:
