@@ -12,7 +12,18 @@ def Player(*circles):
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
         attributes.CircleAnimation(),
-        attributes.Affiliation('player1'))
+        attributes.Affiliation('player1'),
+        attributes.Health(100),
+        attributes.UserControllable())
+        
+def InstakillEnemy(*circles):
+    return Entity(
+        attributes.Circles(circles),
+        attributes.Drawable(),
+        attributes.Color(255, 0, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('enemy'),
+        attributes.InstaKill())
 
 class Entity(object):
     def __init__(self, *attributes):
@@ -26,11 +37,11 @@ class Entity(object):
             
     def add_attributes(self, *attributes):
         for attribute in attributes:
-            self.attributes[attribute.name] = attribute
+            self.attributes[attribute] = attribute
         
     def remove_attributes(self, *attributes):
         for attribute in attributes:
-            del self.attributes[attribute.name]
+            del self.attributes[attribute]
             
     def __getattr__(self, name):
         if name in self.__dict__:

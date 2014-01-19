@@ -6,6 +6,7 @@ import pygame
 import events
 import handlers
 import entity
+import consts
 from utils.vector import *
 from utils.circle import *
 
@@ -20,11 +21,15 @@ class GameFrame(object):
         self.events_manager.attach(self.name, pygame.KEYDOWN, handlers.test)
         
         # TODO: Make a level loading thing
+        enemy1 = entity.InstakillEnemy(Circle(Cartesian(400, 400), Cartesian(0, 0), 30))
         player = entity.Player(Circle(Cartesian(50, 50), Cartesian(0, 0), 20))
-        self.entities = entity.EntityManager(player)
+        self.entities = entity.EntityManager(player, enemy1)
+        
         fling = handlers.Fling(player)
         self.events_manager.attach(self.name, pygame.MOUSEBUTTONDOWN, fling)
         self.events_manager.attach(self.name, pygame.MOUSEBUTTONUP, fling)
+        
+        self.events_manager.attach(self.name, consts.COLLIDE_EVENT, handlers.handle_collision)
             
         self.physics_engine = engines.physics.PhysicsEngine(self.entities, 1)
         self.rendering_engine = engines.renderer.Renderer(self.entities)

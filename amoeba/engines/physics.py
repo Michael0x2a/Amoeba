@@ -43,7 +43,7 @@ class PhysicsEngine(object):
         for entity1 in entities:
             for entity2 in entities:
                 if entity1 is entity2:
-                    pass
+                    continue
                 for circle1 in entity1.circles:
                     for circle2 in entity2.circles:
                         if circle1.is_intersecting(circle2):

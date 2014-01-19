@@ -12,7 +12,7 @@ class Circle(object):
         self.radius = radius
         
     def is_intersecting(self, other):
-        min_distance = self.radius - other.radius
+        min_distance = self.radius + other.radius
         actual_distance = (self.position - other.position).magnitude
         return actual_distance <= min_distance
         

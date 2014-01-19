@@ -8,6 +8,21 @@ import events
 
 from utils.vector import *
 
+def handle_collision(event):
+    player = None
+    enemy = None
+    if 'player1' in event.entity1:
+        player, enemy = event.entity1, event.entity2
+    else:
+        enemy, player = event.entity1, event.entity2
+        
+    if 'instakill' in enemy:
+        print 'instakill'
+        player.health = 0
+        if 'user_controllable' in player:
+            player.remove_attributes('user_controllable')
+        
+    
 class Fling(object):
     def __init__(self, entity):
         self.entity = entity
@@ -15,6 +30,9 @@ class Fling(object):
         self.start = None
         
     def __call__(self, event):
+        if 'user_controllable' not in self.entity:
+            return
+            
         if event.type == pygame.MOUSEBUTTONDOWN:
             circle = self.get_clicked(event)
             if circle is None:
