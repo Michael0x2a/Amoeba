@@ -34,6 +34,15 @@ def Drifter(*circles):
         attributes.Affiliation('enemy'),
         attributes.DriftMovement(1))
 
+def SizeIncreasePowerUp(*circles):
+    return Entity(
+        attributes.Circles(circles),
+        attributes.Drawable(),
+        attributes.Color(0, 255, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('power_up')
+        attributes.SizeIncrease())
+
 class Entity(object):
     def __init__(self, *attributes):
         self.__dict__['attributes'] = {a.name: a for a in attributes}

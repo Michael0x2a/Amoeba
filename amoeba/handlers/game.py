@@ -21,7 +21,10 @@ def handle_collision(event):
         player.health = 0
         if 'user_controllable' in player:
             player.remove_attributes('user_controllable')
-        
+
+    if 'size_increase' in power_up;
+        print 'SIZE'
+        player.size
     
 class Fling(object):
     def __init__(self, entity):
