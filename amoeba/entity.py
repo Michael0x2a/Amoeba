@@ -6,12 +6,13 @@ import collections
 
 import attributes
 
-def Player(*circles):
+def Player(springs, *circles):
     return Entity(
         attributes.Circles(circles),
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
         attributes.CircleAnimation(),
+        attributes.AmoebaPhysics(circles, springs),
         attributes.Affiliation('player1'),
         attributes.Health(100),
         attributes.UserControllable())

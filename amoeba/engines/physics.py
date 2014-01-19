@@ -25,8 +25,10 @@ class PhysicsEngine(object):
 
     def update_position(self, entities):
         width, height = consts.SCREEN_SIZE
-        
         for entity in entities:
+            if 'amoeba_physics' in entity:
+                entity.amoeba_physics.update_acceleration()
+
             for circle in entity.circles:
                 circle.velocity += circle.acceleration * self.time
                 circle.position += circle.velocity * self.time
