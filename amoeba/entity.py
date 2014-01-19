@@ -11,8 +11,8 @@ def Player(springs, *circles):
         attributes.Circles(circles),
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
-        attributes.CircleAnimation(),
-        #attributes.AmoebaPhysics(circles, springs),
+        #attributes.CircleAnimation(),
+        attributes.AmoebaPhysics2(circles),
         attributes.Affiliation('player1'),
         attributes.Health(100),
         attributes.UserControllable(),
@@ -85,6 +85,32 @@ def SizeIncreasePowerUp(*circles):
         attributes.Affiliation('power_up'),
         attributes.SizeIncrease(),
         )
+        
+def TriggerRegion(circle, trigger_name):
+    return Entity(
+        attributes.Circles([circle]),
+        attributes.Trigger(trigger_name),
+        attributes.Affiliation('neutral'))
+        
+def Food(circle, health_increase):
+    return Entity(
+        attributes.Circles([circle]),
+        attributes.Drawable(),
+        attributes.Color(25, 255, 90),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('power_up'),
+        attributes.IncreaseHealth(),
+        )
+        
+def StationaryEnemy(*circles):
+    return Entity(
+        attributes.Circles(circles),
+        attributes.Drawable(),
+        attributes.Color(255, 0, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('enemy'),
+        attributes.Friction(0.995),
+        attributes.InflictsDamage(0.1))
 
 class Entity(object):
     def __init__(self, *attributes):

@@ -7,6 +7,7 @@ import pygame
 import events
 
 from handlers.game import *
+import handlers.sound as sound
 
 def test(event):
     if event.key == pygame.K_DOWN:

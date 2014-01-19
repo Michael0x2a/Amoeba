@@ -2,6 +2,9 @@
 
 from __future__ import division, absolute_import
 
+class Trigger(str):
+    name = 'trigger'
+
 class Affiliation(str):
     name = 'affiliation'
     
@@ -30,3 +33,6 @@ class Dead(object):
 
 class SizeIncreasePowerup(float):
 	name = 'size_increase_powerup'
+    
+class IncreaseHealth(float):
+    name = 'increase_health'

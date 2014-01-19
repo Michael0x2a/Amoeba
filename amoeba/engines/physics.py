@@ -28,6 +28,8 @@ class PhysicsEngine(object):
         for entity in entities:
             if 'amoeba_physics' in entity:
                 entity.amoeba_physics.update_acceleration()
+            if 'amoeba_physics_2' in entity:
+                entity.amoeba_physics_2.process(entity)
 
             for circle in entity.circles:
                 circle.velocity += circle.acceleration * self.time
@@ -39,7 +41,8 @@ class PhysicsEngine(object):
                 if not 10 < circle.position.y < height - 10:
                     circle.velocity.y *= -1
                     
-                circle.velocity.magnitude *= entity.friction
+                if 'friction' in entity:
+                    circle.velocity.magnitude *= entity.friction
 
     def process_collisions(self, entities):
         for entity1 in entities:
