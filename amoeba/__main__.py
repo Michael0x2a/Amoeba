@@ -6,7 +6,14 @@ import frames
 
 def main():
     game = frames.GameFrame()
-    frame_manager = frames.FrameManager({'game': game}, 'game')
+    main_menu = frames.MainMenuFrame()
+    
+    frame_map = {
+        'game': game, 
+        'main_menu': main_menu
+    }
+    
+    frame_manager = frames.FrameManager(frame_map, 'main_menu')
     frame_manager.run()
     
 if __name__ == '__main__':

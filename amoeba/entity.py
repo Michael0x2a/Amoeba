@@ -6,12 +6,13 @@ import collections
 
 import attributes
 
-def Player(*circles):
+def Player(springs, *circles):
     return Entity(
         attributes.Circles(circles),
         attributes.Drawable(),
         attributes.Color(255, 255, 255),
         attributes.CircleAnimation(),
+        #attributes.AmoebaPhysics(circles, springs),
         attributes.Affiliation('player1'),
         attributes.Health(100),
         attributes.UserControllable(),
@@ -38,14 +39,25 @@ def Drifter(*circles):
         attributes.Friction(0.995),
         attributes.InflictsDamage(0.1))
         
+def Hunter(*circles):
+    return Entity(
+        attributes.Circles(circles),
+        attributes.Drawable(),
+        attributes.Color(0, 255, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('enemy'),
+        attributes.ChasingMovement(2),
+        attributes.Friction(0.995),
+        attributes.InflictsDamage(0.1))
+        
 def Bullet(position, velocity, affiliation):
     return Entity(
-        attributes.Circles(Circle(position, velocity, 3),
+        attributes.Circles(Circle(position, velocity, 3)),
         attributes.Drawable(),
         attributes.Color(0, 0, 255),
         attributes.CircleAnimation(),
         attributes.Affiliation(affiliation),
-        attributes.Friction(1)))
+        attributes.Friction(1))
             
 def Powerup(circle, powerup):
     return Entity(

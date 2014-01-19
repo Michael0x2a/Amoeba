@@ -2,6 +2,8 @@
 
 from __future__ import division, absolute_import
 
+import math
+
 import pygame
 import events
 import handlers
@@ -13,6 +15,13 @@ from utils.circle import *
 import engines
 import attributes
 
+SPRINGS = [
+    [None      , (0.001, 30.0), (0.001, 30.0), (0.001, 30.0)],
+    [(0.001, 30.0), None, None, None],
+    [(0.001, 30.0), None, None, None],
+    [(0.001, 30.0), None, None, None]
+]
+
 class GameFrame(object):
     def __init__(self):
         self.name = 'game'
@@ -22,7 +31,15 @@ class GameFrame(object):
     
         # TODO: Make a level loading thing
         enemy1 = entity.InstakillEnemy(Circle(Cartesian(400, 400), Cartesian(0, 0), 30))
-        player = entity.Player(Circle(Cartesian(50, 50), Cartesian(0, 0), 20))
+        '''player = entity.Player(
+            SPRINGS,
+            Circle(Cartesian(100, 100), Cartesian(0, 0), 30),
+            Circle(Cartesian(50, 50), Cartesian(0, 0), 30),
+            Circle(Cartesian(200, 50), Cartesian(0, 0), 30),
+            Circle(Cartesian(100, 200), Cartesian(0, 0), 30)
+            )'''
+        player = entity.Player(SPRINGS, Circle(Cartesian(100, 100), Cartesian(0, 0), 30))
+        
         drift = entity.Drifter(Circle(Cartesian(300, 50), Polar(1, 0), 5))
         test_powerup = entity.Powerup(
             Circle(Vector(50, 300), Vector(0, 0), 5), 

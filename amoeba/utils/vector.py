@@ -59,6 +59,10 @@ class Vector(object):
     def distance(self, other):
         '''Returns the distance between two vectors as a scalar'''
         return (self - other).magnitude
+
+    def direction(self, other):
+        '''Returns the direction from this vector to the other'''
+        return (other - self).angle
         
     def normalize(self, value=1):
         return Polar(value, self.angle)

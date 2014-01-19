@@ -35,6 +35,10 @@ class EventsManager(object):
         self.handle_delayed_events()
         
         top = self.handlers['top']
+        
+        if name not in self.handlers:
+            self.handlers[name] = {}
+        
         current = self.handlers[name]
         
         for event in pygame.event.get():                

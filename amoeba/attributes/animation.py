@@ -26,7 +26,11 @@ class CircleAnimation(object):
                 
     def _draw_circles(self, surface, entity, color):
         for circle in entity.circles:
-            pygame.draw.circle(surface, color, circle.position.pos, int(circle.radius))
+            scale = lambda scalar, current: int((current/circle.radius) * scalar)
+            for i in xrange(2, int(circle.radius), 2):
+                r, g, b = color
+                r, g, b = scale(r, i), scale(g, i), scale(b, i)
+                pygame.draw.circle(surface, (r, g, b), circle.position.pos, i, 2)
             
 class DisplayText(object):
     name = 'animation'
