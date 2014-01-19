@@ -24,6 +24,15 @@ def InstakillEnemy(*circles):
         attributes.CircleAnimation(),
         attributes.Affiliation('enemy'),
         attributes.InstaKill())
+        
+def Drifter(*circles):
+    return Entity(
+        attributes.Circles(circles),
+        attributes.Drawable(),
+        attributes.Color(0, 255, 0),
+        attributes.CircleAnimation(),
+        attributes.Affiliation('enemy'),
+        attributes.DriftMovement(1))
 
 class Entity(object):
     def __init__(self, *attributes):

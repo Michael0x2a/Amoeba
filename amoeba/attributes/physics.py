@@ -6,4 +6,3 @@ from utils.vector import *
 
 class Circles(list):
     name = 'circles'
-    
