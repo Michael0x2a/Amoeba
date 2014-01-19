@@ -12,6 +12,7 @@ import consts
 
 from frames.game import GameFrame
 from frames.main_menu import MainMenuFrame
+from frames.level_menu import LevelSelectFrame
 
 class FrameManager(object):
     def __init__(self, frame_map, start):
@@ -25,7 +26,7 @@ class FrameManager(object):
         
         self.stack[-1].start(self.events)
         while True:
-            next_frame = self.events.process(self.stack[-1].name)
+            next_frame, next_level = self.events.process(self.stack[-1].name)
             
             if next_frame == 'destroy':
                 while len(self.stack > 1):
@@ -40,8 +41,11 @@ class FrameManager(object):
                 self.stack[-1].resume()
             elif next_frame is not None:
                 self.stack[-1].suspend()
-                self.stack.append(self.frames[next_Frame])
-                self.stack[-1].start()
+                self.stack.append(self.frames[next_frame])
+                if next_level is not None:
+                    self.stack[-1].start(self.events, next_level)
+                else:
+                    self.stack[-1].start(self.events)
             
             self.stack[-1].update()
             self.stack[-1].draw(self.screen)

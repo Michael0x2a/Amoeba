@@ -6,6 +6,8 @@ import pygame
 
 import time
 
+import consts
+
 Event = pygame.event.Event
 
 def post(event_id, **attributes):
@@ -41,6 +43,9 @@ class EventsManager(object):
         
         current = self.handlers[name]
         
+        retval = None
+        level = None
+        
         for event in pygame.event.get():                
             if event.type in top:
                 for handler in top[event.type]:
@@ -48,8 +53,11 @@ class EventsManager(object):
             if event.type in current:
                 for handler in current[event.type]:
                     handler(event)
+            if event.type == consts.CHANGE_FRAME:
+                retval = event.frame
+                level = event.level
                     
-        return None
+        return retval, level
         
     def handle_delayed_events(self):
         global _events_cache
