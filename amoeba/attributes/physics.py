@@ -139,8 +139,7 @@ class AmoebaPhysics(object):
             self.remove(0, entity)
 
     def eat(self, this_entity, other_entity):
-        for i in xrange(int(len(other_entity.circles)/2)):
-            print i
+        for i in xrange(int(len(other_entity.circles))):
             self.add_random_circle(this_entity)
 
     def remove(self, n, entity):
@@ -174,7 +173,7 @@ class AmoebaPhysics(object):
             radius)
         entity.circles.append(new_circle)
 
-        connections = int(math.ceil(num_existing_circles/1.3))
+        connections = int(math.ceil(num_existing_circles))
         for i in xrange(connections):
             # pick a random existing circle
             existing_circle_number = random.randint(0, num_existing_circles-1)
@@ -182,7 +181,7 @@ class AmoebaPhysics(object):
             # randomize spring: constant, equilibrium length
             # constant = random.uniform(0, 1)
             constant = 0.0005
-            equilibrium_length = random.randint(20, 40)
+            equilibrium_length = random.randint(10, 30)
 
             # add to springs
             spring = (constant, equilibrium_length)

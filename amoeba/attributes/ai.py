@@ -35,9 +35,9 @@ class DriftMovement(object):
         current = time.time()
         if current - self.start > 2:
             self.start = current
-            angle = random.uniform(-math.pi/8, math.pi/8)
+            angle = random.uniform(0, 2*math.pi)
             for circle in entity.circles:
-                circle.velocity.angle += angle
+                circle.velocity.angle = angle
                 circle.velocity.magnitude = self.speed
     
 class ChasingMovement(object):

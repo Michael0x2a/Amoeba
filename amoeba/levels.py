@@ -8,6 +8,7 @@ import entity
 import handlers
 import consts
 import attributes
+import random
 
 from utils.vector import *
 from utils.circle import *
@@ -63,10 +64,13 @@ def level_1(name, entities, events):
         [
             [None]
         ],
-        2,
+        3,
         Circle(Cartesian(100, 100), Cartesian(0, 0), 15))
         
     entities.add(
+        entity.Food(
+            Circle(Cartesian(100, 300), Cartesian(0, 0), 10),
+            30),
         player,
         entity.TriggerRegion(
             Circle(Cartesian(100, 100), Cartesian(0, 0), 100),
@@ -83,22 +87,16 @@ def level_1(name, entities, events):
         entity.TriggerRegion(
             Circle(Cartesian(400, 450), Cartesian(0, 0), 150),
             "trigger5"),
-        entity.Food(
-            Circle(Cartesian(700, 100), Cartesian(0, 0), 10),
-            30),
-        entity.Food(
-            Circle(Cartesian(700, 100), Cartesian(0, 0), 10),
-            30),
+        entity.StationaryEnemy(
+            SPRINGS,
+            2,
+            palette.ORANGE,
+            Circle(Cartesian(500, 100), Cartesian(0, 0), 15)),
         entity.StationaryEnemy(
             SPRINGS,
             3,
             palette.PINK,
             Circle(Cartesian(500, 500), Cartesian(0, 0), 15)),
-        entity.StationaryEnemy(
-            SPRINGS,
-            1,
-            palette.ORANGE,
-            Circle(Cartesian(400, 100), Cartesian(0, 0), 15)),
         entity.StationaryEnemy(
             SPRINGS,
             4,
@@ -121,46 +119,72 @@ def level_1(name, entities, events):
             },
             entities)
     )
-        
+
 def level_2(name, entities, events):
     player = entity.Player(
         [
             [None]
         ],
-        5,
-        Circle(Cartesian(150, 200), Cartesian(0, 0), 15))
-
+        3,
+        Circle(Cartesian(500, 100), Cartesian(0, 0), 15))
     entities.add(
         player,
         entity.Drifter(
             [
                 [None]
             ],
-            2,
-            palette.GREEN - (0, 150, 0),
-            Circle(Cartesian(100, 500), Cartesian(0, 0), 10)),
+            4,
+            palette.YELLOW,
+            Circle(Cartesian(700, 300), Cartesian(0, 0), 10)),
         entity.Drifter(
             [
                 [None]
             ],
             3,
-            palette.GREEN - (0, 75, 0),
-            Circle(Cartesian(800, 200), Cartesian(0, 0), 10)),
+            palette.YELLOW,
+            Circle(Cartesian(100, 100), Cartesian(0, 0), 10)),
         entity.Drifter(
             [
                 [None]
             ],
-            4,
-            palette.GREEN,
-            Circle(Cartesian(800, 500), Cartesian(0, 0), 10)),
-        entity.Hunter(
+            2,
+            palette.YELLOW,
+            Circle(Cartesian(500, 400), Cartesian(0, 0), 10))
+        )
+    standard_attachments(name, events, player)
+    sound_effect_attachments(name, events)
+        
+def level_3(name, entities, events):
+    argsyo = []
+    player = entity.Player(
+        [
+            [None]
+        ],
+        1,
+        Circle(Cartesian(150, 200), Cartesian(0, 0), 15))
+
+    foods = []
+    num_foods = 24
+    food_radius = 10
+    for i in xrange(num_foods):
+        food_position = Cartesian(
+            random.randrange(food_radius, consts.SCREEN_SIZE[0]-food_radius),
+            random.randrange(food_radius, consts.SCREEN_SIZE[1]-food_radius))
+        foods.append(
+            entity.Food(
+                Circle(food_position, Cartesian(0, 0), food_radius), 20))
+    argsyo.extend(foods)
+    argsyo.append(player)
+    argsyo.append(entity.Hunter(
             [
                 [None]
             ],
             7,
             palette.YELLOW,
-            Circle(Cartesian(700, 500), Cartesian(0, 0), 10))
-        )
+            Circle(Cartesian(700, 500), Cartesian(0, 0), 10)))
+    
+    entities.add(*argsyo)
+
     standard_attachments(name, events, player)
     sound_effect_attachments(name, events)
         
@@ -200,9 +224,9 @@ def level_8(name, entities, events):
     
 
 level_map = {
-    1: level_2,
+    1: level_1,
     2: level_2,
-    3: level_1,
+    3: level_3,
     4: level_1,
     5: level_1,
     6: level_1,
